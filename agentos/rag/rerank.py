@@ -1,3 +1,10 @@
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(current_dir))
+sys.path.insert(0, project_root)
+
+
 #from flashrank import Ranker, RerankRequest
 #from BCEmbedding import RerankerModel #https://huggingface.co/maidalun1020/bce-reranker-base_v1
 from typing import List

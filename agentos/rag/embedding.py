@@ -1,3 +1,10 @@
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(current_dir))
+sys.path.insert(0, project_root)
+
+
 import sentence_transformers #sentence_transformers download model from huggingface
 from typing import List
 from agentos.rag.data import BaseData
