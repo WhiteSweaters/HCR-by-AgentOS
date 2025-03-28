@@ -16,7 +16,7 @@ from agentos.utils import call_model
 myagent = Agent(
     name="myagent",
     model={},
-    tools=[tool1()]
+    tools=[]
 ) 
 
 user_info ="id:123456\ngender:男\nage:25\nheight:180cm\nweight:70kg\nmedical_history:高血压\nsymptom:头晕"
