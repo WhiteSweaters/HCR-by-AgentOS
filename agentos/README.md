@@ -1,4 +1,3 @@
-**[Chinese](./README_zh.md)**
 
 ## **1. Overview**
 

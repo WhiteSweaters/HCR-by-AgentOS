@@ -20,7 +20,7 @@ class Rerank:
         cache_dir:str=None,
         **kwargs
     ):
-        # "cross-encoder/ms-marco-MiniLM-L6-v2"
+        # cross-encoder/ms-marco-MiniLM-L6-v2
         # cache_folder="/mnt/7T/xz"
         self.ranker = CrossEncoder(model_name=model_name,cache_dir=cache_dir,**kwargs)
     
