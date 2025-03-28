@@ -19,7 +19,8 @@ class EmbeddingModel:
         **kwargs
     ):
         self.model_name=model_name
-      
+        # "BAAI/bge-base-zh-v1.5"
+        # cache_folder="/mnt/7T/xz"
         self.embedding_model= sentence_transformers.SentenceTransformer(  
             model_name, cache_folder=cache_dir,**kwargs
         )
@@ -34,4 +35,18 @@ class EmbeddingModel:
         content = [d.get_content() for d in data]
         return self.embedding_model.encode(content)
         
+
+
+# import sentence_transformers 
+# from typing import List
+# from chromadb import Documents, Embeddings
+
+# embedding_model= sentence_transformers.SentenceTransformer(  
+#             "BAAI/bge-base-zh-v1.5", cache_folder="/mnt/7T/xz"
+#         )
+# # content=["我是中国人","我爱中国","我爱我的祖国"]
+# content ="我是中国人"
+# embeddings=embedding_model.encode(content)
+# print(embeddings)
+# print(embeddings.shape)
  

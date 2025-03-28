@@ -6,6 +6,7 @@ sys.path.insert(0, project_root)
 
 
 import csv
+from io import StringIO
 from pathlib import Path
 from pypdf import PdfReader
 from agentos.rag.data import JsonData,TextData,PdfData,CsvData
@@ -39,18 +40,50 @@ def pdf_load(file_path,**kwargs):
 
     return PdfData(page_str,number_of_pages)
 
-def csv_load(file_path,**kwargs):
-    encoding = kwargs.get('encoding')
+# def csv_load(file_path,**kwargs):
+#     encoding = kwargs.get('encoding')
     
    
-    content=""
+#     content=""
+#     with open(file_path, 'r', encoding=encoding) as f:
+#         reader = csv.reader(f)     
+#         for row in reader:
+#             content += ','.join(row)
+#             content += '\n'
+
+#     if content.endswith('\n'):
+#         content = content[:-1]
+
+#     return CsvData(content,encoding)
+
+
+def csv_load(file_path, **kwargs):
+    encoding = kwargs.get('encoding')
+    
+    content = ""
     with open(file_path, 'r', encoding=encoding) as f:
-        reader = csv.reader(f)     
+        reader = csv.reader(f)
+        headers = []
+        try:
+            headers = next(reader)  # 读取标题行
+        except StopIteration:
+            pass  # 处理空文件
+        
+        content_buffer = StringIO()
+        writer = csv.writer(content_buffer)
+        
         for row in reader:
-            content += ','.join(row)
-            content += '\n'
-     
-    return CsvData(content,encoding)
+            # 生成属性:值对
+            pairs = [f"{header}:{value}" for header, value in zip(headers, row)]
+            writer.writerow(pairs)  # 使用csv.writer正确处理特殊字符
+        
+        content = content_buffer.getvalue()
+        # 移除末尾的换行符
+        if content.endswith('\n'):
+            content = content[:-1]
+    
+    return CsvData(content, encoding)
+
 
 load_fun_dict={
     ".txt":text_load,
@@ -78,3 +111,35 @@ class DataLoader:
             encoding=self.encoding
         )
         return data  
+
+
+
+
+# import sys
+# import os
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# project_root = os.path.dirname(os.path.dirname(current_dir))
+# sys.path.insert(0, project_root)
+
+# import csv
+# from pathlib import Path
+# from pypdf import PdfReader
+# from agentos.rag.data import JsonData,TextData,PdfData,CsvData
+# from config.settings import Config
+
+# def csv_load(file_path,**kwargs):
+#     encoding = kwargs.get('encoding')   
+#     content=""
+#     with open(file_path, 'r', encoding=encoding) as f:
+#         reader = csv.reader(f)     
+#         for row in reader:
+#             content += ','.join(row)
+#             content += '\n'   
+#     return CsvData(content,encoding)
+
+# csv=csv_load(project_root+Config.DATA["csv"],encoding="utf-8")
+# print(csv.content)
+# print("=====================================")
+# print(csv.get_content())
+# print("=====================================")
+# print(csv.get_metadata())

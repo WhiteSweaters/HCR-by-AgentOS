@@ -43,6 +43,7 @@ class CharacterSplit:
         return chunk_res
 
 
+
 class RowSplit:
     def __init__(
         self,

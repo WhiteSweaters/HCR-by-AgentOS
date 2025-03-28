@@ -69,3 +69,10 @@ def merge_content(
 ):
     return "\n\n".join(d.get_content() for d in data)
     
+
+
+# data1 = BaseData("Hello", {"author": "Alice"})
+# data2 = BaseData("World", {"author": "Bob"})
+# data_list = [data1, data2]
+# merge_content(data_list)
+# # Output: 'Hello\n\nWorld'

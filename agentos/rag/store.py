@@ -70,7 +70,7 @@ class ChromaDB():
             A Chromadb instance.
         """
         if if_persist:
-            warnings.warn("You have to make sure there is not a ChromaDB document in the {dir} before call this function,otherwise an unknown error may occur.")
+            # warnings.warn("You have to make sure there is not a ChromaDB document in the {dir} before call this function,otherwise an unknown error may occur.")
             if not dir:
                 raise("please input the dir you want to persist the document")
             
