@@ -32,16 +32,17 @@ class Recommendation:
 
 
 
-re = Recommendation()
-mes=re.run("id:426815\ngender:男\nage:50\nheight:172cm\nweight:80kg\nmedical_history:高血压\nsymptom:头晕")
+# re = Recommendation()
+# info={"id":"426815","gender":"男","age":50,"height":"172cm","weight":"80kg","medical_history":"高血压","symptom":"头晕"}
+# mes=re.run(info)
 
-print("\n\n\n\n\n")
-print("==============================MRMORY==============================")
-for i in re.mediagent.memory.memory:
-    print(f"【{i['role']}】")
-    print(i['content'])
-    print("------------")
+# print("\n\n\n\n\n")
+# print("==============================MRMORY==============================")
+# for i in re.mediagent.memory.memory:
+#     print(f"【{i['role']}】")
+#     print(i['content'])
+#     print("------------")
 
-print("\n\n\n\n\n")
-print("=============================RESPONSE=============================")
-print(mes)
+# print("\n\n\n\n\n")
+# print("=============================RESPONSE=============================")
+# print(mes)
