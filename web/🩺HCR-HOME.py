@@ -24,7 +24,7 @@ This project is an intelligent **Health Check Recommendation System** that sugge
 - 🧠 **RAG (Retrieval-Augmented Generation) technology**  
 - ⚡ **Qwen-LLM** for natural language processing  
 - 🔍 **Chormadb** vector database for efficient similarity search  
-- 🎯 **LAgentOS** framework for pipeline orchestration  
+- 🎯 **AgentOS** framework for pipeline orchestration  
 
 Designed to bridge medical knowledge with individual needs through AI-powered analysis.  
 
