@@ -1,4 +1,4 @@
-### ![Powered by Qwen-max](https://img.shields.io/badge/Powered_by-Qwen-max-0A0A0A?style=for-the-badge&logo=deepseek)
+### ![Powered by Qwen-max](https://img.shields.io/badge/Powered_by-Qwen_max-0A0A0A?style=for-the-badge&logo=deepseek)
 
 
 # 🩺Health Check Recommendation🩺
