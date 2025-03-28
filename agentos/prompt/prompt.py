@@ -6,6 +6,7 @@ argument1:<argument value>
 argument2:<argument value>
 ...
 
+
 The following tool functions are available in the format of
 function index.
 function name:function description
@@ -17,11 +18,11 @@ Args:
 
 The function you can use：
 0.
-        finish:If you think you finish the task,please call finish function.The function has not argument!
+finish:If you think you finish the task,please call finish function.The function has not argument!
 {}
 
 
-Please answer exactly according to the format mentioned at the beginning.
+Please answer exactly according to the format mentioned at the beginning.Everytime you can just call one function.
 """
  
  
