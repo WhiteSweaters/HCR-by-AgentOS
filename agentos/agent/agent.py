@@ -18,7 +18,7 @@ def parse_tool_info(tools):
     info = ""
     for index, tool in enumerate(tools):
         # info = info+(index+1)+".\n"
-        info = info+"function "+str(index+1)+".\n"
+        info = info+"\nfunction "+str(index+1)+".\n"
         # info = info+tool.run.__doc__
         info = info+inspect.cleandoc(tool.run.__doc__)
     return info
@@ -92,7 +92,7 @@ class Agent:
         tool_call_res = self.call_tool(tool_name,tool_args)
         self.memory.add_memory(Message(Role.USER,"The "+tool_name+" function has been executed and the result is below:\n"+tool_call_res))
         
-        print(f"tool_call_res:{tool_call_res}")
+        print(f"tool_call_res:\n{tool_call_res}")
 
         return True    
          

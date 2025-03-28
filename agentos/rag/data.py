@@ -67,7 +67,7 @@ class CsvData(BaseData):
 def merge_content(
     data:List[BaseData]
 ):
-    return "\n\n".join(d.get_content() for d in data)
+    return "\n".join(d.get_content() for d in data)
     
 
 
