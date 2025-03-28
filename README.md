@@ -13,20 +13,27 @@ HCR-by-AgentOS/
 ├── data/
 │   ├──health_check_data.csv
 │   └──symptoms.pdf
+├── agentos/
+│   ├── agent/
+│   ├── memory/
+│   ├── prompt/
+│   ├── rag/
+│   ├── tools/
+│   └── utils/
 ├── vectordb/
-│   └── vector_db_1/
+│   ├── vector_db_1/
 │   └── vector_db_2/
 ├── src/
 │   ├── vectorstore.py
 │   ├── hcr.py
-│   └── hcr_prompts.py
-│   └── tools.py
+│   ├── hcr_prompts.py
+│   ├── tools.py
 │   └── utils.py
 ├── test/
 ├── web/
 │   ├── pages/
-│   │   └── 1_🥰_Recommend.py
-│   │   └── 2_🤖_Chatbot.py
+│   │   ├── 1_🥰_Recommend.py
+│   │   ├── 2_🤖_Chatbot.py
 │   │   └── 3_🏥_Hospitals.py
 │   └── 🩺HCR-HOME.py
 ├── requirements.txt
