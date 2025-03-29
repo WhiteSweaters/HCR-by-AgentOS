@@ -31,9 +31,11 @@ class Agent:
         name:str=None,
         model:dict=None,
         tools:List=None,
+        api_key: str | None = None,
     ):
         self.name = name
         self.model = model
+        self.api_key = api_key
 
         self.tools={}
         for tool in tools:
@@ -57,13 +59,13 @@ class Agent:
         return str(self.tools[tool_name].run(*tool_args))
 
     def reason(
-        self
+        self,
     ):
         
-        response = call_model(self.memory.memory) #需要改这里
+        response = call_model(self.memory.memory,self.api_key) #需要改这里
         
         self.memory.add_memory(Message(Role.ASSISTANT,response))
-        #print(response)
+        # print(response)
 
         #parse response
         thought = ""
@@ -101,6 +103,7 @@ class Agent:
     def run(
         self,
         task:str,
+        api_key: str | None = None,
     ):
         self.memory.add_memory(Message(Role.USER,task))
           

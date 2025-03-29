@@ -108,32 +108,46 @@ from openai import OpenAI
  
 
 ##CUDA_VISIBLE_DEVICES=1 python -m vllm.entrypoints.openai.api_server --model /mnt/7T/xz/models--meta-llama--Llama-2-7b-chat-hf/snapshots/f5db02db724555f92da89c216ac04704f23d4590 --max_num_seqs 1024
-def call_model(messages):
-    # client = OpenAI(
-    #     base_url="http://localhost:8000/v1",
-    #     api_key="xxx",
-    # )
+# def call_model(messages):
+#     # client = OpenAI(
+#     #     base_url="http://localhost:8000/v1",
+#     #     api_key="xxx",
+#     # )
 
-    # response = client.chat.completions.create(
-    #     model="/mnt/7T/xz/models--meta-llama--Llama-2-7b-chat-hf/snapshots/f5db02db724555f92da89c216ac04704f23d4590",
-    #     messages = messages
+#     # response = client.chat.completions.create(
+#     #     model="/mnt/7T/xz/models--meta-llama--Llama-2-7b-chat-hf/snapshots/f5db02db724555f92da89c216ac04704f23d4590",
+#     #     messages = messages
         
+#     # )
+
+#     # return response
+#     # return completion.choices[0].message.content 
+
+ 
+    # client = OpenAI(
+    #     # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
+    #     api_key="sk-1da53659ce324727b53db9ec76240031",
+    #     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
     # )
-
-    # return response
-    # return completion.choices[0].message.content 
-
+    # completion = client.chat.completions.create(
+    #     model="qwen-max", # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+    #     messages=messages
+    # )
  
-    client = OpenAI(
-        # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
-        api_key="sk-1da53659ce324727b53db9ec76240031",
-        base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+#     return completion.choices[0].message.content 
+ 
+from together import Together
+
+def call_model(messages, api_key: str | None = None):
+
+    client = Together(
+        api_key=api_key,
+        base_url="https://api.together.xyz/v1",
     )
+
     completion = client.chat.completions.create(
-        model="qwen-max", # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-        messages=messages
+    model="deepseek-ai/DeepSeek-V3",
+    messages=messages,
     )
- 
-    return completion.choices[0].message.content 
- 
 
+    return completion.choices[0].message.content 
