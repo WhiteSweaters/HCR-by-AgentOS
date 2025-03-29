@@ -22,7 +22,7 @@ st.markdown(
 ## 📖 Project Overview  
 This project is an intelligent **Health Check Recommendation System** that suggests personalized medical examination packages using:  
 - 🧠 **RAG (Retrieval-Augmented Generation) technology**  
-- ⚡ **Qwen-LLM** for natural language processing  
+- ⚡ **DeepSeek V3** for natural language processing  
 - 🔍 **Chormadb** vector database for efficient similarity search  
 - 🎯 **AgentOS** framework for pipeline orchestration  
 
@@ -135,7 +135,7 @@ st.markdown("""
     </tr>
     <tr>
         <td><strong>Large Language Model</strong></td>
-        <td>Qwen-max API</td>
+        <td>DeepSeek V3 API</td>
     </tr>
     <tr>
         <td><strong>Framework</strong></td>
