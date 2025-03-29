@@ -1,8 +1,8 @@
-### ![Powered by Qwen-max](https://img.shields.io/badge/Powered_by-Qwen_max-0A0A0A?style=for-the-badge&logo=deepseek)
+### ![Powered by DeepSeek](https://img.shields.io/badge/Powered_by-DeepSeek_V3-0A0A0A?style=for-the-badge&logo=deepseek)
 
 
 # 🩺Health Check Recommendation🩺
-This project is a health check recommendation system built using AgentOS, and Qwen-max LLM. It uses RAG technology to recommend health check packages based on user information.
+This project is a health check recommendation system built using [AgentOS](https://github.com/QinbinLi/AgentOS), and [together.ai(DeepSeek V3)](https://docs.together.ai/docs/serverless-models). It uses RAG technology to recommend health check packages based on user information.
 
 
 ### 🗂️Folder Structure🗂️
@@ -61,7 +61,7 @@ streamlit run web/🩺HCR-HOME.py
 
 | Component          | Technology Selection     |
 |--------------------|--------------------------|
-| Large Model        | Qwen-max API             |
+| Large Model        | DeepSeek V3 API          |
 | Framework          | AgentOS                  |
 | Vector Database    | Chromadb                 |
 | Frontend           | Streamlit                |
