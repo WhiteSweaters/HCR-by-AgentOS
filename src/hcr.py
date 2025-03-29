@@ -28,6 +28,18 @@ class Recommendation:
         self.mediagent.memory.add_memory(Message(Role.SYSTEM,OUTPUT_PROMPT))
         response=call_model(self.mediagent.memory.memory)
         self.mediagent.memory.add_memory(Message(Role.ASSISTANT,response))
+
+        print("\n\n\n\n\n")
+        print("==============================MRMORY==============================")
+        for i in self.mediagent.memory.memory:
+            print(f"【{i['role']}】")
+            print(i['content'])
+            print("------------")
+
+        print("\n\n\n\n\n")
+        print("=============================RESPONSE=============================")
+        print(response)
+        
         return response
 
 
