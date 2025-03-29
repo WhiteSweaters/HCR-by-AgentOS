@@ -4,6 +4,9 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(current_dir))
 sys.path.insert(0, project_root)
 
+__import__("pysqlite3")
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+
 
 import sentence_transformers #sentence_transformers download model from huggingface
 from typing import List
