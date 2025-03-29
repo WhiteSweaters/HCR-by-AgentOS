@@ -51,8 +51,7 @@ if not TOGETHER_AI_API.startswith("tgp"):
     st.warning("Please enter API!", icon="⚠️")
 
 
-random1=random.randint(50, 200)
-random2=random.randint(0, 100)
+
 
 
 id=st.text_input("ID(6 figures)", key="id", help="Please enter your ID")
@@ -62,12 +61,12 @@ with col1:
                           options=["male", "female", "secret"],
                           format_func = str,
                           help = "if you don't want to tell us, keep secret")
-    height = st.slider("Height(cm)", 50, 200, random1)
+    height = st.slider("Height(cm)", 0, 200, 50)
 with col2:
     age = st.number_input("Age", 
                           min_value=0, 
                           max_value=100)
-    weight = st.slider("Weight(kg)", 0, 100, random2)
+    weight = st.slider("Weight(kg)", 0, 100, 40)
 medical_history = st.text_area("Medical History", key="medical", height=100)
 symptoms = st.text_area("Symptoms", key="symptoms", height=100)
 submitted = st.button("Recommend", icon='✔️', use_container_width=True)
@@ -78,7 +77,7 @@ if submitted:
     if not TOGETHER_AI_API.startswith("tgp"):
         pass
     else:
-        if height == random1 or age == 0 or weight == random2 or not medical_history.strip() or not symptoms.strip():
+        if height == 50 or age == 0 or weight == 40 or not medical_history.strip() or not symptoms.strip():
             st.error("Please fill in all the information", icon="🚨")
         else:
             re= Recommendation(TOGETHER_AI_API)
