@@ -46,15 +46,4 @@ class Recommendation:
 
 # re = Recommendation()
 # info={"id":"426815","gender":"男","age":50,"height":"172cm","weight":"80kg","medical_history":"高血压","symptom":"头晕"}
-# mes=re.run(info)
-
-# print("\n\n\n\n\n")
-# print("==============================MRMORY==============================")
-# for i in re.mediagent.memory.memory:
-#     print(f"【{i['role']}】")
-#     print(i['content'])
-#     print("------------")
-
-# print("\n\n\n\n\n")
-# print("=============================RESPONSE=============================")
-# print(mes)
+# re.run(info)
