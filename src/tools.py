@@ -13,9 +13,14 @@ from agentos.rag.store import ChromaDB
 from config.settings import Config
 from agentos.rag.data import merge_content
 
+# embedding=EmbeddingModel(
+#         model_name="BAAI/bge-base-zh-v1.5",
+#         cache_dir="/mnt/7T/xz"
+# )
+
 embedding=EmbeddingModel(
         model_name="BAAI/bge-base-zh-v1.5",
-        cache_dir="/mnt/7T/xz"
+        # cache_dir="/mnt/7T/xz"
 )
 
 v1=ChromaDB.load_document(
