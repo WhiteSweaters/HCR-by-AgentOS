@@ -126,7 +126,7 @@ from openai import OpenAI
  
     # client = OpenAI(
     #     # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
-    #     api_key="sk-1da53659ce324727b53db9ec76240031",
+    #     api_key="",
     #     base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
     # )
     # completion = client.chat.completions.create(

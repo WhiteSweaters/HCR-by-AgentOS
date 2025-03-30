@@ -46,6 +46,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+# @st.dialog("Input your together.ai API")
+# def input():
+#     api=st.text_input("API", type="password", key="api_key" ,help="https://api.together.xyz/")
+#     submitted = st.button("Confirm", icon='✔️', use_container_width=True)
+#     if submitted:
+#         st.session_state.TOGETHER_AI_API=api
+
+# with st.sidebar:
+#     st.header("⚙️ Setting")
+#     st.button("Input API", on_click=input,use_container_width=True)
+#     if "TOGETHER_AI_API" not in st.session_state or not st.session_state.TOGETHER_AI_API.startswith("tgp"):
+#         st.warning("Please enter API!", icon="⚠️")
+
 TOGETHER_AI_API = st.text_input("TOGETHER_AI_API", type="password" ,help="https://api.together.xyz/")
 if not TOGETHER_AI_API.startswith("tgp"):
     st.warning("Please enter API!", icon="⚠️")
@@ -82,7 +95,7 @@ if submitted:
         else:
             re= Recommendation(TOGETHER_AI_API)
             user_info = format_user_info(gender, age, height, weight, medical_history, symptoms, id)
-            with st.spinner("analyzing..."):
+            with st.spinner("analyzing...",show_time=True):
                 start = time.time()
                 result = re.run(user_info)
                 with st.sidebar.expander(label="TEST",expanded=True):
