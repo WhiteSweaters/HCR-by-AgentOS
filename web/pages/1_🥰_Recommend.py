@@ -59,6 +59,7 @@ st.markdown("""
 #     if "TOGETHER_AI_API" not in st.session_state or not st.session_state.TOGETHER_AI_API.startswith("tgp"):
 #         st.warning("Please enter API!", icon="⚠️")
 
+
 TOGETHER_AI_API = st.text_input("TOGETHER_AI_API", type="password" ,help="https://api.together.xyz/")
 if not TOGETHER_AI_API.startswith("tgp"):
     st.warning("Please enter API!", icon="⚠️")
