@@ -53,7 +53,7 @@ class Recommendation:
 
 
 
-re = Recommendation(api_key=api_key)
-info={"id":"426815","gender":"男","age":50,"height":"172cm","weight":"80kg","medical_history":"高血压","symptom":"头晕"}
-re.run(info)
+# re = Recommendation(api_key=api_key)
+# info={"id":"426815","gender":"男","age":50,"height":"172cm","weight":"80kg","medical_history":"高血压","symptom":"头晕"}
+# re.run(info)
 
