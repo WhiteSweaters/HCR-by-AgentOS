@@ -68,3 +68,46 @@ class search_by_other:
         result = v1.query_data(user_info, query_num=int(num))
         result = merge_content(result)
         return result
+    
+
+
+class recommend_by_age:
+    def __init__(self):
+        pass
+
+    def run(self,age:int):
+        """
+        recommend_by_age:根据患者的年龄阶段推荐不同的体检项目
+        Args:
+        age (int): 患者年龄
+        """
+        age = int(age)
+        if(age <= 18):
+            result = "建议关注生长发育、视力、营养、心理健康等方面的检查"
+        elif(age > 18 and age <= 40):
+            result = "建议关注体重、血压、血糖、血脂、甲状腺功能、颈椎腰椎的检查"
+        elif(age > 40 and age <= 60):
+            result = "建议关注心脑血管、肿瘤标志物、骨密度及其他慢性病的检查"
+        elif(age > 60):
+            result = "建议加强肿瘤筛查、心脑血管检查、胃肠镜检查，同时进行认知功能衰退评估"
+        return result
+
+
+
+class recommend_by_gender:
+    def __init__(self):
+        pass
+
+    def run(self,gender:str):
+        """
+        recommend_by_gender:根据患者的性别推荐不同的体检项目
+        Args:
+        age (int): 患者性别(male/female)
+        """
+        if(gender=="male"):
+            result = "建议男性关注前列腺、肝脏、心脑血管、肺部、生殖系统等方面的检查"
+        elif(gender == "female"):
+            result = "建议女性关注乳腺、宫颈、妇科等方面的检查"
+        else:
+            result = "性别输入有误，请输入'male'或'female'"
+        return result
