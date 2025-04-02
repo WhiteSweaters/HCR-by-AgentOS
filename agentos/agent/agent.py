@@ -103,7 +103,6 @@ class Agent:
     def run(
         self,
         task:str,
-        api_key: str | None = None,
     ):
         self.memory.add_memory(Message(Role.USER,task))
           
