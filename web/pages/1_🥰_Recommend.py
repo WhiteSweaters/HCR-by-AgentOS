@@ -40,7 +40,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("""
 <div style="text-align: center;">
-    <img src="https://cdn.jsdelivr.net/gh//Nuyoahwjl/draft/typing.svg" 
+    <img src="https://cdn.jsdelivr.net/gh//Nuyoahwjl/Nuyoahwjl/HCR/typing.svg" 
          style="display: block; margin: auto; width: 100%;">
 </div>
 """, unsafe_allow_html=True)
