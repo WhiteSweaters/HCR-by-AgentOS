@@ -13,18 +13,6 @@ st.markdown("""
     /* General styling */
     body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
     
-    /* Input field styling */
-    .stTextInput input {
-        border-radius: 15px;
-        padding: 12px 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        border: 1px solid #e0e0e0;
-        transition: all 0.3s ease;
-    }
-    .stTextInput input:focus {
-        box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
-    }
-    
     /* Select box styling */
     .stSelectbox select {
         border-radius: 15px;
@@ -92,13 +80,24 @@ st.markdown("""
     
     /* 通知文本居中 */
     .centered-notice {
-        text-align: center;
+        background: rgba(255, 243, 205, 0.9); 
+        border: 2px solid rgba(255, 238, 186, 0.5); 
         max-width: 800px;
-        margin: 0 auto 2rem;
-        padding: 1rem;
-        background: #fff3cd;
+        text-align: center;
         border-radius: 12px;
-        border: 2px solid #ffeeba;
+        padding: 1rem;
+        color: hsl(45, 100%, 30%); 
+        
+        /* 深色主题覆盖 */
+        @media (prefers-color-scheme: dark) {
+            background: rgba(77, 60, 15, 0.95); 
+            border-color: hsl(45, 70%, 40%);
+            max-width: 800px;
+            text-align: center;
+            border-radius: 12px;
+            padding: 1rem;
+            color: hsl(45, 70%, 80%); 
+        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -129,7 +128,7 @@ with st.sidebar:
     st.header("⚙️ Settings")
     st.session_state.model = st.selectbox(
         "Select Model",
-        ("deepseek-ai/DeepSeek-V3"),
+        ("deepseek-ai/DeepSeek-V3","Qwen/QwQ-32B","google/gemma-2-27b-it"),
         index=0,
         key="model_selector"
     )
@@ -202,14 +201,3 @@ if prompt := st.chat_input("Enter your medical query..."):
     if response:
         st.session_state.messages.append({"role": "assistant", "content": response})
     
-    # # 自动滚动到底部
-    # st.markdown("""
-    # <script>
-    #     window.addEventListener("load", function() {
-    #         const input = document.querySelector(".stChatInput textarea");
-    #         if (input) {
-    #             input.scrollIntoView();
-    #         }
-    #     });
-    # </script>
-    # """, unsafe_allow_html=True)
