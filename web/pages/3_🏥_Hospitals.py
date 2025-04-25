@@ -4,23 +4,13 @@ import logging
 import pandas as pd
 import pydeck as pdk
 from geopy.distance import geodesic
+BAIDU_API_AK = "kfLxkGbOE95apSymbmlTBLRjIt4Jsd7U"
 
 
 st.set_page_config(
     page_title="Hospitals",
     page_icon="🏥",
 )
-
-
-# data = {
-#     'latitude': [30.579121999999995, 30.582869000000002, 30.553873000000003, 30.535321000000007, 30.517218000000028],
-#     'longitude': [114.26234900000009, 114.27413299999989, 114.353838, 114.298947, 114.41445299999998],
-#     'name': ['同济医院', '协和医院', '中南医院', '人民医院', '华中科技大学校医院']
-# }
-# st.map(data, use_container_width=True)
-
-
-BAIDU_API_AK = "kfLxkGbOE95apSymbmlTBLRjIt4Jsd7U" 
 
 
 st.markdown("""
@@ -47,7 +37,7 @@ st.markdown("""
 
 # --------------------- Functions ---------------------
 def get_client_ip():
-    """Get client's real IP (prioritize domestic services)"""
+    """获取客户端IP（优先国内服务）"""
     services = [
         {'url': 'https://www.taobao.com/help/getip.php', 'pattern': 'ip', 'type': 'text'},
         {'url': 'https://ip.360.cn/IPShare/info', 'key': 'ip'},
@@ -64,7 +54,7 @@ def get_client_ip():
             else:
                 data = response.json()
                 if 'key' in service:
-                    return data.get(service['key'], '').split(',')[0].strip()       
+                    return data.get(service['key'], '').split(',')[0].strip()    
         except Exception as e:
             logging.warning(f"Service {service['url']} failed: {str(e)}")
             continue   
@@ -73,7 +63,7 @@ def get_client_ip():
 
 
 def get_location(ip):
-    """High-precision IP positioning using Baidu Map API"""
+    """使用百度地图API进行高精度IP定位"""
     try:
         url = f"https://api.map.baidu.com/location/ip?ip={ip}&ak={BAIDU_API_AK}&coor=bd09ll"
         response = requests.get(url, timeout=3)
@@ -84,14 +74,29 @@ def get_location(ip):
                 data['content']['point']['x'],
                 data['content'].get('accuracy', 'City-level positioning')
             )
-        return None, None, "Positioning failed"
+        return None, None, "Location failed"
     except Exception as e:
-        logging.error(f"Positioning request failed: {str(e)}")
+        logging.error(f"Location request failed: {str(e)}")
         return None, None, "Service exception"
 
 
+def geocode_address(address):
+    """地址地理编码（使用百度地图API）"""
+    try:
+        url = f"http://api.map.baidu.com/geocoding/v3/?address={address}&output=json&ak={BAIDU_API_AK}"
+        response = requests.get(url, timeout=5)
+        data = response.json()
+        if data['status'] == 0:
+            location = data['result']['location']
+            return location['lat'], location['lng']
+        return None, None
+    except Exception as e:
+        logging.error(f"Geocoding failed: {str(e)}")
+        return None, None
+
+
 def get_hospitals(lat, lon, radius=20000):
-    """Get hospital data via Overpass API"""
+    """通过Overpass API获取医院数据"""
     overpass_url = "https://overpass-api.de/api/interpreter"
     query = f"""
     [out:json];
@@ -105,7 +110,7 @@ def get_hospitals(lat, lon, radius=20000):
         hospitals = []
         for element in data['elements']:
             hospitals.append({
-                'name': element['tags'].get('name', 'Unknown Hospital'),
+                'name': element['tags'].get('name', '未知医院'),
                 'lat': element['lat'],
                 'lon': element['lon'],
             })
@@ -116,59 +121,71 @@ def get_hospitals(lat, lon, radius=20000):
 
 
 def calculate_distance(row, user_loc):
-    """Calculate distance between hospital and user (km)"""
+    """计算医院与用户的距离（千米）"""
     hospital_loc = (row['lat'], row['lon'])
     return geodesic(user_loc, hospital_loc).km
 
 
 # --------------------- Page Layout ---------------------
 st.title("🏥 Nearby Hospital")
-st.write("Medical resource query system based on precise positioning")
-# Sidebar settings
+st.write("A Medical Resource Query System Based on Precise Positioning")
+
+# Sidebar Settings
 with st.sidebar:
     st.header("⚙️ Settings Panel")
+    user_loc = None
+    accuracy = ""
     # Manual positioning toggle
     manual_mode = st.checkbox("Manual Positioning Mode", help="Enable when automatic positioning is inaccurate")
+    # Search parameters
+    search_radius = st.slider("Search Radius (km)", 1, 50, 20)
+    min_distance = st.slider("Number of Nearest Hospitals to Display", 1, 50, 25)
+    st.markdown("------")
     if manual_mode:
-        default_lat, default_lon = 30.518371, 114.424921  # Wuhan 
-        lat = st.number_input("Latitude", value=default_lat, format="%.6f")
-        lon = st.number_input("Longitude", value=default_lon, format="%.6f")
-        user_loc = (lat, lon)
-        accuracy = "Manual location"
+        address = st.text_input("Please enter a detailed address", 
+                              placeholder="eg:武汉市洪山区华中科技大学",)
+        if st.button("📍 Geocode Address"):
+            with st.spinner('Geocoding address...'):
+                lat, lon = geocode_address(address)
+                if lat and lon:
+                    user_loc = (lat, lon)
+                    accuracy = "Manual positioning"
+                    st.success("Address geocoding successful!")
+                else:
+                    st.error("Geocoding failed, please check input format")
     else:
         # Automatic positioning
         with st.spinner('Fetching location information...'):
             ip = get_client_ip()
-            lat, lon, accuracy = get_location(ip) if ip else (None, None, "Positioning failed")
-            user_loc = (lat, lon) if lat and lon else None
-    # Search parameters
-    search_radius = st.slider("Search radius (kilometers)", 1, 50, 20)
-    min_distance = st.slider("Display nearest hospitals count", 1, 50, 25)
+            if ip:
+                lat, lon, accuracy = get_location(ip)
+                user_loc = (lat, lon) if lat and lon else None
+            else:
+                user_loc = None
+                accuracy = "Location failed"
+    # Display location information
+    if user_loc:
+        try:
+            lat = float(user_loc[0])
+            lon = float(user_loc[1])
+            st.subheader("📍 Location Information")
+            st.write(f"""
+            - Latitude: `{lat:.6f}`
+            - Longitude: `{lon:.6f}`
+            - Accuracy: `{accuracy}`
+            """)
+        except (TypeError, ValueError) as e:
+            st.error(f"Coordinate format error: {str(e)}")
+            st.stop()
+    else:
+        st.stop()
 
 
-# --------------------- Location Display ---------------------
-if manual_mode:
-    st.success("✅ Manual positioning mode enabled")
-else:
-    st.write(f"**Detected IP Address:** `{ip if ip else 'Unknown'}`")
-if user_loc:
-    st.write(f"""
-    **Current Location Information**
-    - Latitude: `{user_loc[0]:.6f}`
-    - Longitude: `{user_loc[1]:.6f}`
-    - Positioning Accuracy: `{accuracy}`
-    """)
-else:
-    st.error("Unable to obtain location information. Please try:")
-    st.markdown("1. Check network connection\n2. Enable manual positioning mode\n3. Refresh page")
-    st.stop()
-
-
-# --------------------- Data Retrieval ---------------------
-with st.spinner(f'Searching for hospitals within {search_radius} kilometers...'):
+# --------------------- Data Fetching ---------------------
+with st.spinner(f'Searching for hospitals within {search_radius} km radius...'):
     hospitals_df = get_hospitals(*user_loc, search_radius*1000)
     if hospitals_df.empty:
-        st.warning("⚠️ No medical institutions found within the current range")
+        st.warning("⚠️ No medical institutions found within current range")
         st.stop()
     # Calculate distances
     hospitals_df['distance'] = hospitals_df.apply(
@@ -178,62 +195,68 @@ with st.spinner(f'Searching for hospitals within {search_radius} kilometers...')
     hospitals_df = hospitals_df.sort_values('distance').head(min_distance)
 
 
-# --------------------- Visualization ---------------------
-# Stats cards
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric("🏥 Medical Institutions", len(hospitals_df))
-with col2:
-    st.metric("📏 Nearest Distance", f"{hospitals_df['distance'].min():.2f} km")
-with col3:
-    st.metric("📏 Farthest Distance", f"{hospitals_df['distance'].max():.2f} km")
-# Map visualization
-map_layers = [
-    pdk.Layer(
-        "ScatterplotLayer",
-        data=pd.DataFrame([{'lat': user_loc[0], 'lon': user_loc[1]}]),
-        get_position='[lon, lat]',
-        get_color='[255, 0, 0, 200]',
-        get_radius=200,
-        pickable=True
-    ),
-    pdk.Layer(
-        "ScatterplotLayer",
-        data=hospitals_df,
-        get_position='[lon, lat]',
-        get_color='[0, 128, 255, 200]',
-        get_radius=150,
-        pickable=True
-    )
-]
-st.pydeck_chart(pdk.Deck(
-    map_style='road',
-    initial_view_state=pdk.ViewState(
-        latitude=user_loc[0],
-        longitude=user_loc[1],
-        zoom=12,
-        pitch=50
-    ),
-    layers=map_layers,
-    tooltip={
-        'html': '<b>{name}</b><br/>Distance: {distance} km',
-        'style': {'color': 'white'}
-    }
-))
-# Data table
-st.subheader("📋 Hospital Details")
-st.dataframe(
-    hospitals_df[['name', 'distance']].rename(
-        columns={'name':'Name', 'distance':'Distance'}
-    ),
-    height=400,
-    column_config={
-        "Distance": st.column_config.NumberColumn(
-            format="%.2f km",
-            width="small"
+# --------------------- Content Display ---------------------
+if manual_mode:
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("🏥 Medical Institutions", len(hospitals_df))
+    with col2:
+        st.metric("📏 Nearest Distance", f"{hospitals_df['distance'].min():.2f} km")
+    with col3:
+        st.metric("📏 Farthest Distance", f"{hospitals_df['distance'].max():.2f} km")
+    # Map visualization
+    map_layers = [
+        pdk.Layer(
+            "ScatterplotLayer",
+            data=pd.DataFrame([{'lat': user_loc[0], 'lon': user_loc[1]}]),
+            get_position='[lon, lat]',
+            get_color='[255, 0, 0, 200]',
+            get_radius=200,
+            pickable=True
+        ),
+        pdk.Layer(
+            "ScatterplotLayer",
+            data=hospitals_df,
+            get_position='[lon, lat]',
+            get_color='[0, 128, 255, 200]',
+            get_radius=150,
+            pickable=True
         )
-    }
-)
+    ]
+    st.pydeck_chart(pdk.Deck(
+        map_style='road',
+        initial_view_state=pdk.ViewState(
+            latitude=user_loc[0],
+            longitude=user_loc[1],
+            zoom=12,
+            pitch=50
+        ),
+        layers=map_layers,
+        tooltip={
+            'html': '<b>{name}</b><br/>Distance: {distance} km',
+            'style': {'color': 'white'}
+        }
+    ))
+    # Data table
+    st.subheader("📋 Hospital Details")
+    st.dataframe(
+        hospitals_df[['name', 'distance']].rename(
+            columns={'name':'Name', 'distance':'Distance'}
+        ),
+        height=400,
+        column_config={
+            "Distance": st.column_config.NumberColumn(
+                format="%.2f km",
+                width="medium"
+            )
+        }
+    )
+else:
+    # Automatic mode shows list only
+    st.subheader("Nearby Hospital List")
+    st.write(f"Found {len(hospitals_df)} medical institutions based on automatic positioning:")
+    for idx, row in hospitals_df.iterrows():
+        st.write(f"- {row['name']}")
 # Refresh button
 if st.button("🔄 Refresh Data"):
     st.rerun()
