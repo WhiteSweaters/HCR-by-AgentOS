@@ -125,7 +125,7 @@ MEDICAL_SYSTEM_PROMPT = """
 
 # 侧边栏配置
 with st.sidebar:
-    st.header("⚙️ Settings")
+    st.header("⚙️Settings⚙️")
     st.session_state.model = st.selectbox(
         "Select Model",
         ("deepseek-ai/DeepSeek-V3","Qwen/QwQ-32B","google/gemma-2-27b-it"),
