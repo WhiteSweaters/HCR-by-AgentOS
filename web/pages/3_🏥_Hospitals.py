@@ -13,28 +13,6 @@ st.set_page_config(
 )
 
 
-st.markdown("""
-<style>
-    .reportview-container {
-        background: #f0f2f6;
-    }
-    .sidebar .sidebar-content {
-        background: #ffffff;
-        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-    }
-    h1 {
-        color: #2c3e50;
-    }
-    .st-bq {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-</style>
-""", unsafe_allow_html=True)
-
-
 # --------------------- Functions ---------------------
 def get_client_ip():
     """获取客户端IP（优先国内服务）"""
@@ -127,7 +105,7 @@ def calculate_distance(row, user_loc):
 
 
 # --------------------- Page Layout ---------------------
-st.title("🏥 Nearby Hospital")
+st.title("Nearby Hospital")
 st.write("A Medical Resource Query System Based on Precise Positioning")
 
 # Sidebar Settings
@@ -136,12 +114,17 @@ with st.sidebar:
     user_loc = None
     accuracy = ""
     # Manual positioning toggle
-    manual_mode = st.checkbox("Manual Positioning Mode", help="Enable when automatic positioning is inaccurate")
+    # manual_mode = st.checkbox("Manual Positioning Mode", help="Enable when automatic positioning is inaccurate")
+    mode = st.radio("Mode",
+                   ["Auto_Mode", "Manual_Mode"],
+                   index=0,
+                   help="Select Mode",
+                   horizontal=True)  # 水平排列选项
     # Search parameters
     search_radius = st.slider("Search Radius (km)", 1, 50, 20)
     min_distance = st.slider("Number of Nearest Hospitals to Display", 1, 50, 25)
     st.markdown("------")
-    if manual_mode:
+    if mode == "Manual_Mode":
         address = st.text_input("Please enter a detailed address", 
                               placeholder="eg:武汉市洪山区华中科技大学",)
         if st.button("📍 Geocode Address"):
@@ -196,15 +179,16 @@ with st.spinner(f'Searching for hospitals within {search_radius} km radius...'):
 
 
 # --------------------- Content Display ---------------------
-if manual_mode:
+if mode == "Manual_Mode":
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("🏥 Medical Institutions", len(hospitals_df))
+        st.metric("Medical Institutions", len(hospitals_df), border=True)
     with col2:
-        st.metric("📏 Nearest Distance", f"{hospitals_df['distance'].min():.2f} km")
+        st.metric("Nearest Distance", f"{hospitals_df['distance'].min():.2f} km", border=True)
     with col3:
-        st.metric("📏 Farthest Distance", f"{hospitals_df['distance'].max():.2f} km")
+        st.metric("Farthest Distance", f"{hospitals_df['distance'].max():.2f} km", border=True)
     # Map visualization
+    st.subheader("🗺️ Hospital Map")
     map_layers = [
         pdk.Layer(
             "ScatterplotLayer",
@@ -239,24 +223,55 @@ if manual_mode:
     ))
     # Data table
     st.subheader("📋 Hospital Details")
+    display_df = hospitals_df[['name', 'distance']].rename(
+        columns={'name': 'Hospital Name', 'distance': 'Distance (km)'}
+        )
+    display_df['Distance (km)'] = display_df['Distance (km)'].round(2)
     st.dataframe(
-        hospitals_df[['name', 'distance']].rename(
-            columns={'name':'Name', 'distance':'Distance'}
-        ),
+        display_df,
         height=400,
+        use_container_width=True,
         column_config={
-            "Distance": st.column_config.NumberColumn(
+            "Hospital Name": st.column_config.TextColumn(
+                width="medium",
+                help="Medical institution name"
+            ),
+            "Distance (km)": st.column_config.NumberColumn(
                 format="%.2f km",
-                width="medium"
+                help="Distance from your location"
             )
-        }
+        },
+        hide_index=True
     )
 else:
-    # Automatic mode shows list only
-    st.subheader("Nearby Hospital List")
-    st.write(f"Found {len(hospitals_df)} medical institutions based on automatic positioning:")
-    for idx, row in hospitals_df.iterrows():
-        st.write(f"- {row['name']}")
+    # Automatic mode shows table in expander
+    with st.expander(f"🏥 Nearby Hospitals ({len(hospitals_df)} found)", expanded=True):
+        display_df = hospitals_df[['name', 'distance']].rename(
+            columns={'name': 'Hospital Name', 'distance': 'Distance (km)'}
+        )
+        display_df['Distance (km)'] = display_df['Distance (km)'].round(2)
+        st.dataframe(
+            display_df,
+            height=400,
+            use_container_width=True,
+            column_config={
+                "Hospital Name": st.column_config.TextColumn(
+                    width="medium",
+                    help="Medical institution name"
+                ),
+                "Distance (km)": st.column_config.NumberColumn(
+                    format="%.2f km",
+                    help="Distance from your location"
+                )
+            },
+            hide_index=True
+        )
+        st.caption(f"""
+        Summary: 
+        - Average Distance: {display_df['Distance (km)'].mean():.2f} km
+        - Nearest Hospital: {display_df['Distance (km)'].min():.2f} km
+        - Coverage Radius: {display_df['Distance (km)'].max():.2f} km
+        """)
 # Refresh button
 if st.button("🔄 Refresh Data"):
     st.rerun()
