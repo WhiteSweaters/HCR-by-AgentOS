@@ -20,7 +20,7 @@ st.set_page_config(
 # st.map(data, use_container_width=True)
 
 
-BAIDU_API_AK = "your_baidu_api_key_here" 
+BAIDU_API_AK = "CXuH8nPtWHuBR3PpjdKa2QYvn7HRjGLz" 
 
 
 st.markdown("""
