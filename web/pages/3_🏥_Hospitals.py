@@ -228,14 +228,9 @@ st.dataframe(
     ),
     height=400,
     column_config={
-        "Name": st.column_config.TextColumn(
-            width="medium",
-            text_align="center"
-        ),
         "Distance": st.column_config.NumberColumn(
             format="%.2f km",
-            width="medium",
-            text_align="center" 
+            width="medium"
         )
     }
 )
