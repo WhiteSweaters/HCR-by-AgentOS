@@ -20,7 +20,7 @@ st.set_page_config(
 # st.map(data, use_container_width=True)
 
 
-BAIDU_API_AK = "CXuH8nPtWHuBR3PpjdKa2QYvn7HRjGLz" 
+BAIDU_API_AK = "kfLxkGbOE95apSymbmlTBLRjIt4Jsd7U" 
 
 
 st.markdown("""
@@ -230,7 +230,7 @@ st.dataframe(
     column_config={
         "Distance": st.column_config.NumberColumn(
             format="%.2f km",
-            width="medium"
+            width="small"
         )
     }
 )
