@@ -106,24 +106,7 @@ if submitted:
                 with st.expander("RECOMMENDATIONS", expanded=True):
                     st.markdown("## RECOMMENDATIONS")
                     st.write(result)
-                    # Convert markdown to HTML
-                    html_content = st.markdown(result, unsafe_allow_html=True).body
-
-                    # Convert HTML to PDF
-                    pdf_buffer = BytesIO()
-                    pisa_status = pisa.CreatePDF(BytesIO(html_content.encode('utf-8')), dest=pdf_buffer)
-
-                    if not pisa_status.err:
-                        st.download_button(
-                            label="Download PDF",
-                            data=pdf_buffer.getvalue(),
-                            file_name="Recommendations.pdf",
-                            mime="application/pdf",
-                            use_container_width=True,
-                            icon="📥"
-                        )
-                    else:
-                        st.error("Failed to generate PDF", icon="🚨")
+                    st.download_button(label="Download", data=result, file_name="Recommendations.pdf", use_container_width=True, icon="📥")
 
 
 
