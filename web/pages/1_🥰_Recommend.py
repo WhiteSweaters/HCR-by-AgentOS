@@ -67,7 +67,6 @@ if not TOGETHER_AI_API.startswith("tgp"):
 
 
 
-
 id=st.text_input("ID(6 figures)", key="id", help="Please enter your ID")
 col1, col2 = st.columns(2)
 with col1:
@@ -107,6 +106,22 @@ if submitted:
                     st.write(result)
                     st.download_button(label="Download", data=result, file_name="Recommendations.md", use_container_width=True, icon="📥")
 
+
+
+# 添加查看历史记录的按钮
+view_history = st.button("View History", icon='📜', use_container_width=True)
+if view_history:
+    re = Recommendation(TOGETHER_AI_API)
+    history = re.get_history(id)
+    if history:
+        st.markdown("## History Records")
+        for record in history:
+            st.write(f"Timestamp: {record[-1]}")
+            st.write(f"User Info: {record[1:-2]}")
+            st.write(f"Recommendation: {record[-2]}")
+            st.write("---")
+    else:
+        st.warning("No history records found.", icon="⚠️")
 
 
 
