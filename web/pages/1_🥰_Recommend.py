@@ -108,21 +108,6 @@ if submitted:
                     st.download_button(label="Download", data=result, file_name="Recommendations.md", use_container_width=True, icon="📥")
 
 
-from src.utils import generate_report
-import streamlit as st
-
-if st.button("📄 下载体检报告"):
-    save_path = f"report_{user_info['id']}.pdf"
-    generate_report(user_info, result, save_path)
-    with open(save_path, "rb") as f:
-        btn = st.download_button(
-            label="点击下载PDF",
-            data=f,
-            file_name=save_path,
-            mime="application/pdf"
-        )
-
-
 
 
 # if submitted:
