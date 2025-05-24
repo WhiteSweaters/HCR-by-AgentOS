@@ -39,7 +39,7 @@ class search_by_id:
 
     def run(self, ID: str):
         """
-        根据患者ID在数据库查询其曾经的体检信息
+        search_by_id:根据患者id在数据库查询其曾经的体检信息
         Args:
             ID (str): 唯一标识用户的六位数ID
         Returns:
@@ -62,7 +62,7 @@ class search_by_other:
 
     def run(self, num: int, user_info: str):
         """
-        根据患者个人信息在数据库查询相似病人体检信息
+        search_by_other:根据患者个人信息在数据库查询相似病人体检信息
         Args:
             num (int): 需要查询的相似体检信息数量(不超过5)
             user_info (str): 用户输入的除ID外全部个人信息，格式为"性别,年龄(岁),身高(cm),体重(kg),既往病史,症状"
@@ -83,7 +83,7 @@ class recommend_by_age:
 
     def run(self, age: int):
         """
-        根据患者的年龄阶段推荐不同的体检项目
+        recommend_by_age:根据患者的年龄阶段推荐不同的体检项目
         Args:
             age (int): 患者年龄
         Returns:
@@ -110,7 +110,7 @@ class recommend_by_gender:
 
     def run(self, gender: str):
         """
-        根据患者的性别推荐不同的体检项目
+        recommend_by_gender:根据患者的性别推荐不同的体检项目
         Args:
             gender (str): 患者性别(male/female)
         Returns:
