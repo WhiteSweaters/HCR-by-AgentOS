@@ -106,7 +106,7 @@ if submitted:
                 with st.expander("RECOMMENDATIONS", expanded=True):
                     st.markdown("## RECOMMENDATIONS")
                     st.write(result)
-                    st.download_button(label="Download", data=result, file_name="Recommendations.pdf", use_container_width=True, icon="📥")
+                    st.download_button(label="Download", data=result, file_name="Recommendations.md", use_container_width=True, icon="📥")
 
 
 
