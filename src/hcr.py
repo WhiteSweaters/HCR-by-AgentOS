@@ -26,7 +26,7 @@ class Recommendation:
             name="mediagent",
             model={},
             tools=[
-                search_by_id(),          # 按ID搜索工具
+                search_by_id(),          # 按ID搜索历史体检记录
                 search_by_other(),       # 按其他条件搜索工具
                 recommend_by_age(),      # 按年龄推荐工具
                 recommend_by_gender()    # 按性别推荐工具
