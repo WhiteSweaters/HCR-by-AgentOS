@@ -120,7 +120,8 @@ if view_history:
         for record in history:
             st.write(f"Timestamp: {record[-1]}")
             st.write(f"User Info: {record[1:-2]}")
-            st.write(f"Recommendation\n: {record[-2]}")
+            st.write("Recommendation:")
+            st.write(f"{record[-2]}")
             st.write("---")
     else:
         st.warning("No history records found.", icon="⚠️")
