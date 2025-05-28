@@ -10,6 +10,11 @@ from src.prompt import REPORT_PROMPT
 from together import Together
 import time
 
+st.set_page_config(
+    page_title="Report",
+    page_icon="📄",
+)
+
 with st.sidebar:
     st.header("⚙️ Settings")
     st.session_state.model = st.selectbox(
