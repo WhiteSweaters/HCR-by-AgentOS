@@ -55,9 +55,9 @@ if st.button("Generate Report"):
                 st.success("Report generated successfully!")
             except Exception as e:
                 st.error(f"An error occurred: {e}")
-        with st.expander("Report Details", expanded=True):
-                st.markdown("### Report Details")
-                st.write(result)
-                st.download_button(label="Download", data=result, file_name="Report.md", use_container_width=True, icon="📥")
+            with st.expander("Report Details", expanded=True):
+                    st.markdown("### Report Details")
+                    st.write(result)
+                    st.download_button(label="Download", data=result, file_name="Report.md", use_container_width=True, icon="📥")
     else:
         st.error("Please enter a valid 8-digit card number.")
