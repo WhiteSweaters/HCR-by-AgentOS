@@ -8,6 +8,7 @@ import streamlit as st
 from src.report import get_health_check_info
 from src.prompt import REPORT_PROMPT
 from together import Together
+import time
 
 with st.sidebar:
     st.header("⚙️ Settings")
@@ -40,11 +41,14 @@ card_number = st.text_input("Card Number", max_chars=8, help="Enter an 8-digit c
 if st.button("Generate Report"):
     report = get_health_check_info(int(card_number))
     if card_number.isdigit() and len(card_number) == 8 and report != 0:
-        with st.spinner("Generating report..."):
+        with st.spinner("Generating report...",show_time=True):
+            start = time.time()
             try:
                 report = get_health_check_info(int(card_number))
                 result = call_model(
-                    messages = REPORT_PROMPT.format(report),
+                    messages = [
+                    {"role": "user", "content": REPORT_PROMPT.format(report)}
+                    ],
                     api_key=st.session_state.api_key,
                     model=st.session_state.model
                 )
