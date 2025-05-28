@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import json
 
-def get_health_check_info(card_number):
+def get_health_check_info(card_number:int):
     # 加载 Excel 文件
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(current_dir)
@@ -16,7 +16,7 @@ def get_health_check_info(card_number):
         result_dict = filtered_df.iloc[0].to_dict()
         return json.dumps(result_dict, indent=4, ensure_ascii=False)
     else:
-        return json.dumps({"error": "未找到该卡号的体检信息。"}, ensure_ascii=False)
+        return 0
 
 if __name__ == "__main__":
     card_number = 18054423
