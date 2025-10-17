@@ -11,7 +11,7 @@ from src.hcr import Recommendation
 import time
 import random
 from io import BytesIO
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 
 
 def format_user_info(gender, age, height, weight, medical_history, symptoms, id="000000"):
